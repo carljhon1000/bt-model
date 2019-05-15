@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Bootstrap Example</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+
+	<button type="button" class="btn btn-default btn-xs" style="cursor:pointer;" data-toggle="modal" data-target="#modifySubscription" data-href="1" data-type="3">Actions</button>
+	
+		<div class="modal fade" id="modifySubscription" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" style="display: none;">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+						<h4 class="modal-title" id="myModalLabelAddSubscription">Add subscription</h4>
+					</div>
+					<form action="" method="post" id="modify-subscription">
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-primary" id="modify-service-button">Save changes</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+	</body>
+	
+	<script>
+		$('#modifySubscription').on('show.bs.modal', function(e) 
+		{
+			if ($(e.relatedTarget).data('type') == 3) 
+			{
+				$("#myModalLabelAddSubscription").html('Edit subscription');
+				var data_type = $(e.relatedTarget).data('href');
+			}
+			
+			$("#modify-subscription").html('<div class="modal-body"><img src="assets/ajax-loader.gif" border="0" alt="loading"></div>');
+			
+			var post_data = {method:"details", type:data_type};
+
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() 
+			{
+				if (this.readyState == 4 && this.status == 200) 
+				{
+					document.getElementById("modify-subscription").innerHTML = this.responseText;
+				}
+			};
+			xhttp.open("POST", "ajax_subscription_details.html", true);
+			xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+			xhttp.send(JSON.stringify( post_data));
+			
+			
+		});
+	</script>
+</html>
